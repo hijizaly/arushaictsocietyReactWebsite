@@ -91,7 +91,7 @@ const ForgetPasswordForm =(props)=>{
     // console.dir(result.data.data);
     // console.log(authTokenStoreFun.pwdrsturlGet());
 
-        return <ResetPasswordForm infoMessage={result.data.message}/>
+        return <ResetPasswordForm infoMessage={result.data.message} autoClose={autoCloseDialog}/>
     };
 
 

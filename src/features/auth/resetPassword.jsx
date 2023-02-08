@@ -24,12 +24,12 @@ const ResetPasswordForm = (props) => {
         }
         console.log(newCode);
         console.log(authTokenStoreFun.pwdrsturlGet());
-        // try {
-        //     await resetForgetPassword({urlId: authTokenStoreFun.pwdrsturlGet(), credentials: newCode}).unwrap()
-        // } catch (e) {
-        //     console.log(e)
-        // }
-        //
+        try {
+            await resetForgetPassword({urlId: authTokenStoreFun.pwdrsturlGet(), credentials: newCode}).unwrap()
+        } catch (e) {
+            console.log(e)
+        }
+
 
 
         // const hashSum_sha1=crypto.createHash('sha1');
@@ -63,8 +63,11 @@ const ResetPasswordForm = (props) => {
 
 
     }
+    // if(result.isLoading) return <Loader sizeinPx="80" message="Please wiat"/>
     if(result.isSuccess){
+        // props.closeH
         console.dir(result);
+        props.autoClose();
     }
 
     const [inputs, setInput] = useState({
@@ -94,7 +97,7 @@ const ResetPasswordForm = (props) => {
                         <TextField label="Screat code" size="small" name="code" value={inputs_.code}
                                    onChange={inputsOnChangeHandler_} inputProps={{
                             maxLength: 6,
-                        }} required/>
+                        }} autoComplete="off" required/>
                         {/*<ButtonGroup>*/}
                         {/*<Button type="submit" color="success" variant="contained" disabled={false}>Submit Reset Code</Button>*/}
                         {/*</ButtonGroup>*/}

@@ -13,7 +13,7 @@ const authTokenStoreFun = {
         const now = new Date()
 
 
-        let n_ = Number(now.getTime()) + Number(45000);
+        let n_ = Number(now.getTime()) + Number(60000 * 45);
         const urlData_ = urlData + "T" + n_;
         return localStorage.setItem('passwordResetUrl', urlData_);
     },
@@ -22,30 +22,20 @@ const authTokenStoreFun = {
     // }
     pwdrsturlGet: () => {
         let sItem = localStorage.getItem('passwordResetUrl');
-        console.dir(sItem);
 
-        // if(sItem===null){
-        //     return null
-        // }else {
+        if (sItem === null) {
+            return null
+        } else {
+            const sItem_ = sItem.split("T");
+            const now = new Date();
 
-        const sItem_ = sItem.split("T");
-        // console.dir(sItem_);
-
-
-        const now = new Date();
-        console.log(now.getTime() + "muda wa sasa__")
-        console.log(sItem_[1] + "ul0 pita__")
-
-
-        if (Number(now.getTime()) > Number(sItem_[1])) {
-            console.log("muda ume isha apo");
-            // localStorage.removeItem('passwordResetUrl')
-            // return null
-        }else {
-            console.log("muda Bado");
-            // return sItem_[0];
+            if (Number(now.getTime()) > Number(sItem_[1])) {
+                localStorage.removeItem('passwordResetUrl')
+                return null
+            } else {
+                return sItem_[0];
+            }
         }
-        // }
 
     }
 }
