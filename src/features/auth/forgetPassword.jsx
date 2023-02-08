@@ -87,8 +87,6 @@ const ForgetPasswordForm =(props)=>{
         // console.dir(result.data.message)
         if(result.data.data!==null){
             authTokenStoreFun.pwdrsturlSet(result.data.data.urlId)
-            // console.dir(result.data.data.urlId)
-
         }
     // console.dir(result.data.data);
     // console.log(authTokenStoreFun.pwdrsturlGet());

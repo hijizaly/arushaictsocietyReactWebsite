@@ -24,12 +24,12 @@ const ResetPasswordForm = (props) => {
         }
         console.log(newCode);
         console.log(authTokenStoreFun.pwdrsturlGet());
-        try {
-            await resetForgetPassword({urlId: authTokenStoreFun.pwdrsturlGet(), credentials: newCode}).unwrap()
-        } catch (e) {
-            console.log(e)
-        }
-
+        // try {
+        //     await resetForgetPassword({urlId: authTokenStoreFun.pwdrsturlGet(), credentials: newCode}).unwrap()
+        // } catch (e) {
+        //     console.log(e)
+        // }
+        //
 
 
         // const hashSum_sha1=crypto.createHash('sha1');
