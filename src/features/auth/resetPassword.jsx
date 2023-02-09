@@ -4,17 +4,30 @@ import {Button, ButtonGroup, Divider, Stack, TextField} from "@mui/material";
 import {Base64} from 'js-base64';
 import Loader from "../../components/primaryComponents/Loader";
 import authTokenStoreFun from "./authToken";
-// import sha256 from 'crypto-js/sha256';
-// import crypto from 'crypto-js';
+
 import {SHA256, enc} from 'crypto-js';
 import {ArrowBackIos, ArrowForwardIos} from "@mui/icons-material";
 import {useResetForgetPasswordMutation} from "../users/usersApiSlice2";
+import SnackToast from "../../components/primaryComponents/MuiSnack";
 
 
 const ResetPasswordForm = (props) => {
     const [resetForgetPassword,result]=useResetForgetPasswordMutation();
+    const [page, setPage] = useState(0);
 
 
+    // const [openToastStates, setOpenerToast] = useState({
+    //     openState:false,
+    //     toastMessages:""
+    // });
+    function openToastSnack() {
+        setPage(page + 2);
+        // setOpenerToast({openState: true,toastMessages: m});
+    }
+
+    function handleSubmit() {
+        setPage(page + 1);
+    }
 
     async function resetCodeSubmission(e) {
         e.preventDefault();
@@ -30,44 +43,16 @@ const ResetPasswordForm = (props) => {
             console.log(e)
         }
 
-
-
-        // const hashSum_sha1=crypto.createHash('sha1');
-        // // const hashSum_sha1=crypto.createHash('sha256');
-        // hashSum_sha1.update("samaki");
-        // let hex=hashSum_sha1.digest('hex');
-
-
-        // console.dir(SHA256(newCode.code).toString(enc.Hex));
-        // console.log(authTokenStoreFun.pwdrsturlGet());
-        // return <Loader sizeinPx="80" message="Confirm Code"/>
-
-        // if(SHA256(newCode.code)===authTokenStoreFun.pwdrsturlGet()){
-        //     console.log("Done");
-        //
-        // }else {
-        //     console.log("No Done");
-        // }
-
-
-        // setTimeout(()=>{
-        //
-        //
-        //     // return <Loader sizeinPx="80" message="Sending Email"/>
-        //
-        // },1000)
-
-
-        // let nn=Base64.encode('samakisamakisamaki');
-        // console.log(nn);
-
-
     }
-    // if(result.isLoading) return <Loader sizeinPx="80" message="Please wiat"/>
+    // if(result.isLoading) openToastSnack();
+    // if(result.isSuccess) openToastSnack("result HERE");
+    // openToastSnack
+
     if(result.isSuccess){
-        // props.closeH
-        console.dir(result);
+        // console.log(result);
+        // openToastSnack()
         props.autoClose();
+        authTokenStoreFun.pwdrsturlRes();
     }
 
     const [inputs, setInput] = useState({
@@ -134,11 +119,11 @@ const ResetPasswordForm = (props) => {
             </div>
         </React.Fragment>);
     }
-
-    const [page, setPage] = useState(0);
-
-    function handleSubmit() {
-        setPage(page + 1);
+    const toastMessageComponents = (message) => {
+       return (<SnackToast snackToastOpener={true} messageText={message}/>);
+    }
+    const loadingComponents = () => {
+      return(<Loader sizeinPx="80" message="Please wait"/>);
     }
 
     const currentComponent = () => {
@@ -147,6 +132,10 @@ const ResetPasswordForm = (props) => {
                 return firstComponents(inputs, inputsOnChangeOnhandle);
             case 1:
                 return secondComponents(inputs, inputsOnChangeOnhandle);
+            case 2:
+                return toastMessageComponents("bla bla...");
+            case 3:
+                return loadingComponents();
             default:
                 return firstComponents(inputs, inputsOnChangeOnhandle);
         }
@@ -160,6 +149,7 @@ const ResetPasswordForm = (props) => {
             {/*<Button onClick={handleSubmit}>*/}
             {/*    {page === 0 ? "Next" : "Previous"}*/}
             {/*</Button>*/}
+
         </>
     );
     // return firstComponents();

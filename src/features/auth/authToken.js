@@ -37,6 +37,9 @@ const authTokenStoreFun = {
             }
         }
 
+    },
+    pwdrsturlRes:()=>{
+        localStorage.removeItem('passwordResetUrl')
     }
 }
 export default authTokenStoreFun;
