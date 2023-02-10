@@ -12,9 +12,7 @@ export const passwordsApi=apiSlice.injectEndpoints({
             query:(id_)=>({
                 url:"/passwords/"+id_,
 
-                // url:"/passwords/2",
                 method:"GET",
-                // providesTags:["Passwords"]
             })
         }),
         allPasswords:builder.query({

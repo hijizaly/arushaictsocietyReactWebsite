@@ -2,11 +2,8 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import authTokenStoreFun from "../../features/auth/authToken";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "http://localhost:8000/api/v1/",
-    // credentials: 'include',
-    // mode:"cors",
+    baseUrl: "https://api.arushaictsociety.or.tz/api/v1/",
     prepareHeaders: (headers, {getState}) => {
-        // console.log(getState().auth);
         const token=authTokenStoreFun.tokenGet();
             if(token){
                 headers.set('Access-Control-Allow-Origin', '*')
@@ -19,7 +16,6 @@ const baseQuery = fetchBaseQuery({
 
 
 export const apiSlice = createApi({
-    // baseQuery:fetchBaseQuery({baseUrl:"http://localhost:8000/api/v1/"}),
     baseQuery,
     tagTypes: ['Member', 'Skill'],
     endpoints: build => ({})

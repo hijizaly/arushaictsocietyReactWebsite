@@ -25,7 +25,6 @@ const OtherSkillsEdit =(props)=>{
     let prevSkills_={};
     let allSkillsIdAvailable=[];
     for(let i=0;i<otherSkills_.length;i++){
-        // prevSkills.push({'skill_id':otherSkills_[i].other_occupation_id,'skill_name':otherSkills_[i].other_occupation_name});
         prevSkills_[otherSkills_[i].other_occupation_id]={'skill_id':otherSkills_[i].other_occupation_id,'skill_name':otherSkills_[i].other_occupation_name};
     }
 
@@ -35,12 +34,10 @@ const OtherSkillsEdit =(props)=>{
 
     async function otherSkillSubmission(e) {
         e.preventDefault();
-        // console.log(inputs);
         let finalSkillsUpdated = [];
 
 
         for (let key in inputs) {
-            // console.log(inputs[key]);
             if (inputs[key] !== null) {
                 finalSkillsUpdated.push(key);
             }
@@ -50,7 +47,6 @@ const OtherSkillsEdit =(props)=>{
 
         try {
             await addOtherSkills({otherSkills: finalSkillsUpdated}).unwrap();
-            // console.log(result.data);
             props.closeHandler;
 
         } catch (e) {
@@ -58,16 +54,13 @@ const OtherSkillsEdit =(props)=>{
         }
 
     }
-    // console.log(result.data);
     if(result.isSuccess) {
-        // console.dir(result)
         props.closeHandle();
     };
 
 
     const inputsOnChangeOnhandle = (e) => {
         setInputs((prevState => ({...prevState, [e.target.name]: e.target.value})));
-        // console.dir(e.target.value);
     };
 
     const [inputs, setInputs] = useState(prevSkills_);
@@ -82,20 +75,12 @@ const OtherSkillsEdit =(props)=>{
         }));
     };
 
-
-    // console.table(allSkillsIdAvailable)
-    // console.table(prevSkills_);
-
-
     return (
         <form onSubmit={otherSkillSubmission}>
             <FormControl>
                 <Box sx={{ flexGrow: 1,border: '1px dashed grey',p:2,my:2 }}>
                     <Grid container spacing={3}>
-                        {/*Test Area*/}
-                        {/*<Checkbox defaultChecked={inputs.allOtherSkills} value={false ? true:false} name="allOtherSkills" onChange={inputsOnChangeOnhandle} />*/}
 
-                        {/*Test Area*/}
                         {allSkillsIdAvailable.map((eachSkills,key) => (
                             <Grid item xs={4} md={4}>
                                 <Item key={key}>

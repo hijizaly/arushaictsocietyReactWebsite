@@ -1,7 +1,6 @@
 const authTokenStoreFun = {
     tokenSet: (token) => {
         token = "Bearer " + token;
-        // localStorage.setItem('authorization', JSON.stringify(token));
         localStorage.setItem('authorization', token);
         return token;
     },
@@ -17,9 +16,6 @@ const authTokenStoreFun = {
         const urlData_ = urlData + "T" + n_;
         return localStorage.setItem('passwordResetUrl', urlData_);
     },
-    // pwdrsturlGet:()=>{
-    //     return localStorage.getItem('passwordResetUrl')
-    // }
     pwdrsturlGet: () => {
         let sItem = localStorage.getItem('passwordResetUrl');
 
