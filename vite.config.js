@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir:'finalBuild',
+    outDir:'../finalBuild',
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output:{
