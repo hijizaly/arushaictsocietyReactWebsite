@@ -24,9 +24,6 @@ const SkillTimeline =(props)=>{
         }else otherSkillTimeline.push(memberTimeline_.data[i]);
     }
 
-    // console.dir(mainSkillTimeline)
-    // console.dir(otherSkillTimeline)
-
 
     return (
         <CardContent>
