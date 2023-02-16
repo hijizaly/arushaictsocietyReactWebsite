@@ -20,7 +20,7 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {useAllSkillsQuery} from "../../features/skills/skillsApiSlice";
-import {useAddMembersMutation} from "../../features/users/usersApiSlice2";
+import {useAddMembersMutation, useIsEmailExistenceMutation} from "../../features/users/usersApiSlice2";
 import {FillingBottle} from "react-cssfx-loading";
 import SnackToast from "./MuiSnack";
 import Loader from "./Loader";
@@ -28,12 +28,15 @@ import Loader from "./Loader";
 
 export default function SignUpForm(props) {
     const [addNewMembers, result] = useAddMembersMutation();
+    const [isEmailExistence, emailResult] = useIsEmailExistenceMutation();
+
     const [openToastStates, setOpenerToast] = useState({
-        openState:false,
-        toastMessages:""
+        openState: false,
+        toastMessages: ""
     });
+
     function openToastSnack(m) {
-        setOpenerToast({openState: true,toastMessages: m});
+        setOpenerToast({openState: true, toastMessages: m});
     }
 
     const [value, setValue] = React.useState(dayjs('1991-01-01'));
@@ -55,6 +58,37 @@ export default function SignUpForm(props) {
     const inputsOnChangeOnhandle = (e) => {
         setInputs((prevState => ({...prevState, [e.target.name]: e.target.value})));
     };
+    const [validEmailState, setValidEmailState] = useState({error: false, errorText: ""});
+
+    const emailTester = (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+
+    const emailCheck = async (e) => {
+        if (e.target.value.length <= 0) {
+            setValidEmailState({error: true, errorText: "Please fill Email"});
+
+        } else {
+            setValidEmailState({error: false, errorText: ""});
+            if (!emailTester.test(e.target.value)) {
+                setValidEmailState({error: true, errorText: "Invalid Email"});
+            } else {
+                const e_ = {
+                    "email": e.target.value
+                }
+                try {
+                    const final_ = await isEmailExistence(e_).unwrap(() => {
+                    }).then((r) => {
+                        setValidEmailState({error: r.status, errorText: r.message})
+                    })
+                } catch (e) {
+                    console.dir(e)
+                }
+            }
+
+
+        }
+
+    }
+
     const signUpSubmitaion = async (e) => {
         e.preventDefault();
         delete inputs.rePassword
@@ -73,13 +107,21 @@ export default function SignUpForm(props) {
             "status": inputs.status
         }
         try {
-            await addNewMembers(tF)
-                .unwrap()
-                .then(()=>{openToastSnack("Everything Go Well & registration go well");})
-                .then(() => {props.closeHandle()})
-            // .then((error) => {
-            //     console.log("error")
-            // });
+            const finalResult=await addNewMembers(tF)
+                .unwrap(() => {})
+                .then((r) => {
+                    // console.log(r);
+                    if(!r.status){
+                        openToastSnack(r.message);
+                    }else {
+                        openToastSnack("Everything Go Well & registration go well");
+                        props.closeHandle()
+                    }
+                })
+                .then(() => {
+                    // props.closeHandle()
+                })
+
         } catch (e) {
             console.log(e);
             // snackToastOpener();
@@ -109,7 +151,10 @@ export default function SignUpForm(props) {
                         <TextField label="Fullname" size="small" value={inputs.name} onChange={inputsOnChangeOnhandle}
                                    name="name" required/>
                         <TextField label="Email" size="small" value={inputs.email} onChange={inputsOnChangeOnhandle}
-                                   name="email" required/>
+                                   name="email" onBlur={emailCheck}
+                                   error={validEmailState.error}
+                                   helperText={validEmailState.error ? validEmailState.errorText : ""}
+                        />
                         <TextField label="Password" size="small" value={inputs.password}
                                    onChange={inputsOnChangeOnhandle}
                                    name="password" type="password" required/>

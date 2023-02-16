@@ -4,6 +4,7 @@ import DataTable from "../../components/primaryComponents/MuiTableGride"
 import EnhancedTable from "../../components/primaryComponents/MuiTablelExp"
 import TableToolBar from "../../components/primaryComponents/MuiTableToolBar";
 import * as React from "react";
+import Loader from "../../components/primaryComponents/Loader";
 
 
 // import {useGetUsersQuery} from "./usersApiSlice";
@@ -35,13 +36,26 @@ const UsersList = () => {
     if(isError) content = <p>{error?.data?.message}</p>
 
     if(isSuccess) content = <DataTable arrayOfData={allData.data} tableColumsNames={['id','Full Name','Email','Phone','Occupation','DOB']} tableAction={tableActionFunction}/>;
+    if(isSuccess) {
+        Object.size = function(obj) {
+            let size = 0,
+                key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+            return size;
+        };
 
+        // let size = Object.size(allData.data[1]);
+        // console.dir(size);
+
+        console.log(allData.data[1]);
+
+        // let data= JSON.parse(allData.data[0]);
+        // console.dir(data.length);
+    }
     // content = <EnhancedTable/>
     // content=<> <TableToolBar/> </>
-
-
-
-
 
     return content;
 }

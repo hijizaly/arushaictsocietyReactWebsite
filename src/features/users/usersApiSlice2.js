@@ -68,6 +68,13 @@ export const membersApi=apiSlice.injectEndpoints({
                 body: credentials,
             })
         }),
+        isEmailExistence:builder.mutation({
+            query:(email)=>({
+                url:"/emailexistence",
+                method:"POST",
+                body: email,
+            })
+        }),
     })
 
 });
@@ -80,7 +87,8 @@ export const {
     useDeleteMembersMutation,
     useForgetPasswordMutation,
     useResetForgetPasswordMutation,
-    useChangePasswordMutation
+    useChangePasswordMutation,
+    useIsEmailExistenceMutation,
 
 } = membersApi;
 

@@ -12,7 +12,7 @@ import SnackToast from "../../components/primaryComponents/MuiSnack";
 
 
 const ResetPasswordForm = (props) => {
-    const [resetForgetPassword,result]=useResetForgetPasswordMutation();
+    const [resetForgetPassword, result] = useResetForgetPasswordMutation();
     const [page, setPage] = useState(0);
 
 
@@ -35,25 +35,35 @@ const ResetPasswordForm = (props) => {
             secrete_code: inputs.code,
             payload: Base64.encode(inputs.newPassword)
         }
-        console.log(newCode);
-        console.log(authTokenStoreFun.pwdrsturlGet());
+        // console.log(newCode);
+        // console.log(authTokenStoreFun.pwdrsturlGet());
         try {
-            await resetForgetPassword({urlId: authTokenStoreFun.pwdrsturlGet(), credentials: newCode}).unwrap()
+            const finalResult = await resetForgetPassword({
+                urlId: authTokenStoreFun.pwdrsturlGet(),
+                credentials: newCode
+            }).unwrap().then((r) => {
+                if(r.status){
+                    // openToastSnack(result.message)
+                    // props.autoClose();
+
+                }openToastSnack(result.message)
+            })
         } catch (e) {
             console.log(e)
         }
 
     }
+
     // if(result.isLoading) openToastSnack();
     // if(result.isSuccess) openToastSnack("result HERE");
     // openToastSnack
 
-    if(result.isSuccess){
-        // console.log(result);
-        // openToastSnack()
-        props.autoClose();
-        authTokenStoreFun.pwdrsturlRes();
-    }
+    // if (result.isSuccess) {
+    //     // console.log(result);
+    //     // openToastSnack()
+    //     props.autoClose();
+    //     authTokenStoreFun.pwdrsturlRes();
+    // }
 
     const [inputs, setInput] = useState({
         code: "",
@@ -120,10 +130,10 @@ const ResetPasswordForm = (props) => {
         </React.Fragment>);
     }
     const toastMessageComponents = (message) => {
-       return (<SnackToast snackToastOpener={true} messageText={message}/>);
+        return (<SnackToast snackToastOpener={true} messageText={message}/>);
     }
     const loadingComponents = () => {
-      return(<Loader sizeinPx="80" message="Please wait"/>);
+        return (<Loader sizeinPx="80" message="Please wait"/>);
     }
 
     const currentComponent = () => {
@@ -145,7 +155,8 @@ const ResetPasswordForm = (props) => {
         <>
             {currentComponent()}
             <br/>
-            {page === 0 ? (<Button onClick={handleSubmit} >Next<ArrowForwardIos sx={{ml: 2}}/></Button>) : (<Button onClick={() => setPage(page - 1)}>Back<ArrowBackIos sx={{ml: 2}}/></Button>)}
+            {page === 0 ? (<Button onClick={handleSubmit}>Next<ArrowForwardIos sx={{ml: 2}}/></Button>) : (
+                <Button onClick={() => setPage(page - 1)}>Back<ArrowBackIos sx={{ml: 2}}/></Button>)}
             {/*<Button onClick={handleSubmit}>*/}
             {/*    {page === 0 ? "Next" : "Previous"}*/}
             {/*</Button>*/}

@@ -135,6 +135,10 @@
 }
 
 .white__gradient {
-  background: rgba(255, 255, 255, 0.6);
-  filter: blur(750px);
+  background: linear-gradient(180deg, rgb(0, 221, 255) 0%, #e4f6ff 100%);
+  filter: blur(350px);
 }
+/*.white__gradient {*/
+/*  background: rgba(255, 255, 255, 0.6);*/
+/*  filter: blur(750px);*/
+/*}*/
