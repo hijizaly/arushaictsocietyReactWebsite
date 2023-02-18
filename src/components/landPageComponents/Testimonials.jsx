@@ -27,7 +27,7 @@ const Testimonials = () => {
         </div>
 
         <div className="flex flex-wrap sm:justify-start justify-center w-full feedback-container relative z-[1] overflow-y-auto h-96">
-            {allMembers.data.data.map((eachMember,key)=>(<FeedbackCard memberDetails={eachMember}/>))}
+            {allMembers.data.data.map((eachMember,index)=>(<FeedbackCard memberDetails={eachMember} key={index}/>))}
             {/*{feedback.map((card) => <FeedbackCard key={card.id} {...card} />)}*/}
         </div>
     </section>);

@@ -1,18 +1,20 @@
-import * as React from 'react';
+import React, { lazy, Suspense } from 'react';
 import {styled} from '@mui/material/styles';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Masonry from '@mui/lab/Masonry';
-import Paper from '@mui/material/Paper';
+const Masonry = lazy(()=>import('@mui/lab/Masonry'));
+const Paper = lazy(()=>import('@mui/material/Paper') ) ;
+const Accordion = lazy(() => import('@mui/material/Accordion'));
+const AccordionSummary = lazy(() => import('@mui/material/AccordionSummary'));
+const AccordionDetails = lazy(() => import('@mui/material/AccordionDetails'));
+const Typography = lazy(() => import('@mui/material/Typography'));
+const ExpandMoreIcon = lazy(() => import('@mui/icons-material/ExpandMore'));
+const Card = lazy(()=>import('@mui/material/Card'))
+const Divider = lazy(()=>import('@mui/material/Divider'))
+const Stack = lazy(()=>import('@mui/material/Stack'))
 
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary, Card, Divider, Stack,
-    Typography,
-} from '@mui/material';
 import {useAllMembersQuery} from "./usersApiSlice2";
 import Loader from "../../components/primaryComponents/Loader";
 import styles from "../../style";
+
 const StyledAccordion = styled(Accordion)(({theme}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     color: theme.palette.text.secondary,
@@ -35,8 +37,6 @@ export default function MembersList() {
 
     function objCharSize(obj) {
         let allCharSize = Array(obj.length).fill(0);
-        // console.dir(allCharSize);
-
         for (let i = 0; i < obj.length; i++) {
             if (typeof obj[i]) {
                 // console.log(Object.values(obj[i]))
@@ -59,74 +59,72 @@ export default function MembersList() {
             }
         }
         return allCharSize;
-
-
     }
 
     if (isLoading) content = loading;
     if (isError) content = <h4>{error?.data?.message}</h4>
-    // if (isSuccess) {
-    //     // console.dir(allData.length);
-    //     objCharSize(allData.data);
-    // }
+
+
 
 
     if (isSuccess) content = (
-                    <section id="home" className={`flex md:flex-row flex-col ${styles.paddingY}`}>
-                        <Masonry columns={4} spacing={2}>
-                            {allData.data.map((eachMembers, index) => (
-                                <Paper key={index} elevation={24}>
-                                    <StyledAccordion sx={{minHeight: objCharSize(allData.data)[index] * 2}}>
-                                        <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-                                            <Card sx={{p: 2, m: 1, width: '99%'}}>
+        <Suspense fallback={loading}>
+            <section id="home" className={`flex md:flex-row flex-col ${styles.paddingY}`}>
+                <Masonry columns={4} spacing={2}>
+                    {allData.data.map((eachMembers, index) => (
+                        <Paper key={index} elevation={24}>
+                            <StyledAccordion sx={{minHeight: objCharSize(allData.data)[index] * 2}}>
+                                <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                                    <Card sx={{p: 2, m: 1, width: '99%'}}>
 
-                                                <Stack direction="column" spacing={-1}>
-                                                    <Typography variant="caption"
-                                                                sx={{fontStyle: 'italic'}}>Fullname:</Typography>
-                                                    <Typography variant="subtitle1" sx={{
-                                                        fontWeight: 'bold',
-                                                        fontSize: 19,
-                                                        textTransform: 'uppercase'
-                                                    }}>
-                                                        {eachMembers.member_fullname}
-                                                    </Typography></Stack>
-
-
-                                                <Divider/>
-                                                <Stack direction="column" spacing={-1}>
-                                                    <Typography variant="caption"
-                                                                sx={{fontStyle: 'italic'}}>Skill:</Typography>
-                                                    <Typography variant="overline" sx={{fontWeight: 'bold'}}>
-                                                        {eachMembers.occupation}
-
-                                                    </Typography></Stack>
-                                            </Card>
-                                        </AccordionSummary>
-
-                                        <AccordionDetails>
-                                            <Typography variant="caption" sx={{
-                                                fontStyle: 'italic',
+                                        <Stack direction="column" spacing={-1}>
+                                            <Typography variant="caption"
+                                                        sx={{fontStyle: 'italic'}}>Fullname:</Typography>
+                                            <Typography variant="subtitle1" sx={{
                                                 fontWeight: 'bold',
-                                                textTransform: 'uppercase',
-                                                fontSize: 15,
-                                            }}>Other Skills</Typography>
+                                                fontSize: 19,
+                                                textTransform: 'uppercase'
+                                            }}>
+                                                {eachMembers.member_fullname}
+                                            </Typography></Stack>
 
-                                            <Divider/>
-                                            <Stack direction="column" spacing={0.5}>
-                                                {eachMembers.other_skills.map((eachOtherSkill, index) => (
 
-                                                    <Typography variant="overline"
-                                                                sx={{fontWeight: 'bold', fontSize: 13}}
-                                                                key={index}>{eachOtherSkill.other_occupation_name}</Typography>
+                                        <Divider/>
+                                        <Stack direction="column" spacing={-1}>
+                                            <Typography variant="caption"
+                                                        sx={{fontStyle: 'italic'}}>Skill:</Typography>
+                                            <Typography variant="overline" sx={{fontWeight: 'bold'}}>
+                                                {eachMembers.occupation}
 
-                                                ))}
-                                            </Stack>
-                                        </AccordionDetails>
-                                    </StyledAccordion>
-                                </Paper>
-                            ))}
-                        </Masonry>
-                    </section>
+                                            </Typography></Stack>
+                                    </Card>
+                                </AccordionSummary>
+
+                                <AccordionDetails>
+                                    <Typography variant="caption" sx={{
+                                        fontStyle: 'italic',
+                                        fontWeight: 'bold',
+                                        textTransform: 'uppercase',
+                                        fontSize: 15,
+                                    }}>Other Skills</Typography>
+
+                                    <Divider/>
+                                    <Stack direction="column" spacing={0.5}>
+                                        {eachMembers.other_skills.map((eachOtherSkill, index) => (
+
+                                            <Typography variant="overline"
+                                                        sx={{fontWeight: 'bold', fontSize: 13}}
+                                                        key={index}>{eachOtherSkill.other_occupation_name}</Typography>
+
+                                        ))}
+                                    </Stack>
+                                </AccordionDetails>
+                            </StyledAccordion>
+                        </Paper>
+                    ))}
+                </Masonry>
+            </section>
+        </Suspense>
     );
 
     return (
@@ -144,7 +142,7 @@ export default function MembersList() {
                         </h1>
 
                     </div>
-        {content}
+                    {content}
                 </div>
             </div>
         </div>

@@ -1,19 +1,23 @@
-// import * as React from "react";
-
+import * as React from "react";
+import {lazy,Suspense,useState} from "react";
 import {
-    InputLabel,
-    MenuItem,
-    Select,
+    // MenuItem,
+    // Select,
     ButtonGroup,
     Button,
     TextField,
-    FormControlLabel,
-    Stack,
+    // Stack,
     FormControl
 } from '@mui/material';
-import MuiButton from "./MuiButton";
-import * as React from "react";
-import {useState} from "react";
+const Stack = lazy(()=>import('@mui/material/Stack'));
+const MenuItem  = lazy(()=>import('@mui/material/MenuItem'));
+const Select = lazy(()=>import('@mui/material/Select'));
+const SnackToast=lazy(()=>import('./MuiSnack'));
+
+// const  = lazy(()=>import('@mui/material/'))
+// const  = lazy(()=>import('@mui/material/'))
+
+
 
 import dayjs from 'dayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
@@ -21,8 +25,6 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DesktopDatePicker} from '@mui/x-date-pickers/DesktopDatePicker';
 import {useAllSkillsQuery} from "../../features/skills/skillsApiSlice";
 import {useAddMembersMutation, useIsEmailExistenceMutation} from "../../features/users/usersApiSlice2";
-import {FillingBottle} from "react-cssfx-loading";
-import SnackToast from "./MuiSnack";
 import Loader from "./Loader";
 
 
@@ -138,89 +140,90 @@ export default function SignUpForm(props) {
         setOccupation(event.target.value);
     };
     const {data: allData, error, isLoading, isSuccess, isError} = useAllSkillsQuery();
-
+    const Loading_=(<Loader message="Fetching..." sizeinPx="30"/>)
 
     return (
         <React.Fragment>
+            <Suspense fallback={Loading_}>
+                <form onSubmit={signUpSubmitaion}>
+                    <FormControl>
+                        <Stack direction="column" spacing={4}>
 
-
-            <form onSubmit={signUpSubmitaion}>
-                <FormControl>
-                    <Stack direction="column" spacing={4}>
-
-                        <TextField label="Fullname" size="small" value={inputs.name} onChange={inputsOnChangeOnhandle}
-                                   name="name" required/>
-                        <TextField label="Email" size="small" value={inputs.email} onChange={inputsOnChangeOnhandle}
-                                   name="email" onBlur={emailCheck}
-                                   error={validEmailState.error}
-                                   helperText={validEmailState.error ? validEmailState.errorText : ""}
-                        />
-                        <TextField label="Password" size="small" value={inputs.password}
-                                   onChange={inputsOnChangeOnhandle}
-                                   name="password" type="password" required/>
-                        <TextField label="Password" size="small" value={inputs.rePassword}
-                                   onChange={inputsOnChangeOnhandle}
-                                   name="rePassword" type="password" required/>
-                        <TextField label="Address" size="small" value={inputs.address} onChange={inputsOnChangeOnhandle}
-                                   name="address" type="text" required/>
-                        <TextField label="Phone" size="small" value={inputs.phone} onChange={inputsOnChangeOnhandle}
-                                   name="phone" type="phone" required/>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DesktopDatePicker
-
-                                label="Date desktop"
-                                inputFormat="MM/DD/YYYY"
-                                value={value}
-                                name="dob"
-                                onChange={handleCalenderChange}
-                                renderInput={(params) => <TextField {...params} />}
+                            <TextField label="Fullname" size="small" value={inputs.name} onChange={inputsOnChangeOnhandle}
+                                       name="name" required/>
+                            <TextField label="Email" size="small" value={inputs.email} onChange={inputsOnChangeOnhandle}
+                                       name="email" onBlur={emailCheck}
+                                       error={validEmailState.error}
+                                       helperText={validEmailState.error ? validEmailState.errorText : ""}
                             />
-                        </LocalizationProvider>
+                            <TextField label="Password" size="small" value={inputs.password}
+                                       onChange={inputsOnChangeOnhandle}
+                                       name="password" type="password" required/>
+                            <TextField label="Password" size="small" value={inputs.rePassword}
+                                       onChange={inputsOnChangeOnhandle}
+                                       name="rePassword" type="password" required/>
+                            <TextField label="Address" size="small" value={inputs.address} onChange={inputsOnChangeOnhandle}
+                                       name="address" type="text" required/>
+                            <TextField label="Phone" size="small" value={inputs.phone} onChange={inputsOnChangeOnhandle}
+                                       name="phone" type="phone" required/>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DesktopDatePicker
 
-                        <>
+                                    label="Date desktop"
+                                    inputFormat="MM/DD/YYYY"
+                                    value={value}
+                                    name="dob"
+                                    onChange={handleCalenderChange}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+
+                            <>
+                                {
+                                    isLoading && Loading_
+                                }
+                            </>
+
+                            <>
+                                {isError && <center><p><i>Failed to fetch Skills</i></p></center>}
+                            </>
+
+                            {/*<InputLabel id="demo-simple-select-label">Professional</InputLabel>*/}
                             {
-                                isLoading && <Loader message="Fetching..." sizeinPx="30"/>
+
+
+                                isSuccess && (
+
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        value={inputs.occupation_id}
+                                        label="Professional"
+                                        onChange={inputsOnChangeOnhandle}
+                                        name="occupation_id"
+                                        required
+                                    >
+                                        {
+                                            allData.data.map((sk) => {
+                                                return (
+                                                    <MenuItem value={sk.skill_id}
+                                                              key={sk.skill_id}>{sk.skill_name}</MenuItem>);
+                                            })
+                                        }
+                                    </Select>
+
+                                )
+
                             }
-                        </>
+                            <ButtonGroup>
+                                <Button type="submit" color="success" variant="contained">Sign In Up</Button>
+                            </ButtonGroup>
+                        </Stack>
+                    </FormControl>
+                </form>
+                <SnackToast snackToastOpener={openToastStates.openState} messageText={openToastStates.toastMessages}/>
+            </Suspense>
 
-                        <>
-                            {isError && <center><p><i>Failed to fetch Skills</i></p></center>}
-                        </>
 
-                        {/*<InputLabel id="demo-simple-select-label">Professional</InputLabel>*/}
-                        {
-
-
-                            isSuccess && (
-
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    value={inputs.occupation_id}
-                                    label="Professional"
-                                    onChange={inputsOnChangeOnhandle}
-                                    name="occupation_id"
-                                    required
-                                >
-                                    {
-                                        allData.data.map((sk) => {
-                                            return (
-                                                <MenuItem value={sk.skill_id}
-                                                          key={sk.skill_id}>{sk.skill_name}</MenuItem>);
-                                        })
-                                    }
-                                </Select>
-
-                            )
-
-                        }
-                        <ButtonGroup>
-                            <Button type="submit" color="success" variant="contained">Sign In Up</Button>
-                        </ButtonGroup>
-                    </Stack>
-                </FormControl>
-            </form>
-            <SnackToast snackToastOpener={openToastStates.openState} messageText={openToastStates.toastMessages}/>
-            {/*<SnackToast snackToastOpener={openToastStates} messageText="Something Went Wrong"/>*/}
         </React.Fragment>
 
 

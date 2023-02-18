@@ -1,6 +1,4 @@
 import styles from "../../style";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import GetStarted from "./GetStarted";
 import * as React from "react";
 import {airbnb} from "../../assets";
 import {Divider} from "@mui/material";

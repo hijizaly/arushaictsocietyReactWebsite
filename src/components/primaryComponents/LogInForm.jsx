@@ -1,32 +1,20 @@
-import {
-    ButtonGroup,
-    Button,
-    TextField,
-    FormControlLabel,
-    Stack,
-    FormControl,
-    Box,
-    DialogTitle,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    Divider
-} from '@mui/material';
-import MuiButton from "./MuiButton";
 import * as React from "react";
-import {useState,useRef,useEffect} from "react";
-import {useNavigate,Link} from 'react-router-dom'
+import {useState, lazy,Suspense} from "react";
+const Divider = lazy(()=>import('@mui/material/Divider'));
+const Stack = lazy(()=>import('@mui/material/Stack'));
+const Button = lazy(()=>import('@mui/material/Button'));
+const ButtonGroup = lazy(()=>import('@mui/material/ButtonGroup'));
+const TextField = lazy(()=>import('@mui/material/TextField'));
+const SnackToast=lazy(()=>import('./MuiSnack'));
+// const  = lazy(()=>import('@mui/material/'))
+
+import {useNavigate} from 'react-router-dom'
 import {useDispatch} from "react-redux";
 import {useLoginMutation} from "../../features/auth/authApiSlice";
-import {FillingBottle} from "react-cssfx-loading";
-import {setCredentials} from "../../features/auth/authSlice";
-import SnackToast from "./MuiSnack";
 import authTokenStoreFun from "../../features/auth/authToken";
-import MuiDialog from "./MuiDialog";
-import ForgetPasswordForm from "../../features/auth/forgetPassword";
+const MuiDialog=lazy(()=>import('./MuiDialog'));
+const ForgetPasswordForm=lazy(()=>import('../../features/auth/forgetPassword'));
 import Loader from "./Loader";
-import ResetPasswordForm from "../../features/auth/resetPassword";
-
 
 
 export default function LogInForm(props){
@@ -116,31 +104,34 @@ export default function LogInForm(props){
 
     return (
         <React.Fragment>
-            <div>
-                <form onSubmit={logInSubmitaion}>
-                    {/*<FormControl noValidate autoComplete="off">*/}
-                    <Stack direction="column" spacing={4}>
-                        <TextField label="Email" size="small" name="email" value={inputs.email} onChange={inputsOnChangeOnhandle} required/>
+            <Suspense fallback={Loader}>
+                <div>
+                    <form onSubmit={logInSubmitaion}>
+                        {/*<FormControl noValidate autoComplete="off">*/}
+                        <Stack direction="column" spacing={4}>
+                            <TextField label="Email" size="small" name="email" value={inputs.email} onChange={inputsOnChangeOnhandle} required/>
 
-                        <TextField label="Password" size="small" type="password" name="password" value={inputs.password} onChange={inputsOnChangeOnhandle}  required/>
+                            <TextField label="Password" size="small" type="password" name="password" value={inputs.password} onChange={inputsOnChangeOnhandle}  required/>
 
-                        <ButtonGroup>
-                            <Button type="submit" color="success" variant="contained">Login</Button>
-                        </ButtonGroup>
+                            <ButtonGroup>
+                                <Button type="submit" color="success" variant="contained">Login</Button>
+                            </ButtonGroup>
 
-                        <Divider/>
-                        <Button variant="text" color="info" onClick={dialogOpenerFP}>Forget Password</Button>
+                            <Divider/>
+                            <Button variant="text" color="info" onClick={dialogOpenerFP}>Forget Password</Button>
 
-                    </Stack>
-                </form>
+                        </Stack>
+                    </form>
 
-            </div>
+                </div>
 
-            <SnackToast snackToastOpener={openToastStates.openState} messageText={openToastStates.toastMessages}/>
-            < MuiDialog openState={dialogOpenFP} closeHandle={dialogCloserFP}>
-                {resetForm}
-                {/*<ForgetPasswordForm closeHandle={dialogCloserFP}/>*/}
-            </MuiDialog>
+                <SnackToast snackToastOpener={openToastStates.openState} messageText={openToastStates.toastMessages}/>
+                < MuiDialog openState={dialogOpenFP} closeHandle={dialogCloserFP}>
+                    {resetForm}
+                    {/*<ForgetPasswordForm closeHandle={dialogCloserFP}/>*/}
+                </MuiDialog>
+            </Suspense>
+
 
         </React.Fragment>
 

@@ -1,14 +1,11 @@
 import styles from "../../style";
-import * as React from "react";
-import GetStarted from "./GetStarted";
-import {discount, robot} from "../../assets";
-// import {InfoIcon} from "@mui/icons-material";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import React, { lazy, Suspense } from 'react';
+const InfoOutlinedIcon = lazy(()=>import('@mui/icons-material/InfoOutlined'));
 
 
 const AboutUsPage = () => {
     return (
-
+        <Suspense fallback="loading...">
         <div className="bg-primary w-full h-screen overflow-hidden p-6">
             <div className={`bg-primary ${styles.flexCenter}`}>
                 <div className={`${styles.boxWidth}`}>
@@ -65,7 +62,7 @@ const AboutUsPage = () => {
                 </div>
             </div>
         </div>
-
+        </Suspense>
     );
 }
 export default AboutUsPage;

@@ -1,15 +1,20 @@
 import {useState} from "react";
+import React, { lazy, Suspense } from 'react';
 
 import {close, logo, menu} from "../../assets";
 import {navLinks} from "../../constants";
-import {Stack, Menu, MenuItem} from '@mui/material';
+const Stack = lazy(()=>import('@mui/material/Stack'));
+const Menu = lazy(()=>import('@mui/material/Menu'));
+const MenuItem=lazy(()=>import('@mui/material/MenuItem'));
+const LiveHelpOutlined=lazy(()=>import('@mui/icons-material/LiveHelpOutlined'));
+const PeopleOutline=lazy(()=>import('@mui/icons-material/PeopleOutline'));
+const MuiDialog=lazy(()=>import('../primaryComponents/MuiDialog'));
+const LogInForm=lazy(()=>import('../primaryComponents/LogInForm'));
+const SignUpForm=lazy(()=>import('../primaryComponents/SignUpForm'));
+const MuiTabs=lazy(()=>import('../primaryComponents/MuiTabs'));
+
 import MuiButton from "../primaryComponents/MuiButton";
-import MuiDialog from "../primaryComponents/MuiDialog"
-import LogInForm from "../primaryComponents/LogInForm";
-import SignUpForm from "../primaryComponents/SignUpForm";
-import MuiTabs from "../primaryComponents/MuiTabs";
-import {EditOutlined, LiveHelpOutlined, PeopleOutline} from "@mui/icons-material";
-import * as React from "react";
+
 import {Link} from "react-router-dom";
 
 
@@ -73,64 +78,66 @@ const Navbar = () => {
 
 
     return (
-        <nav className="w-full flex py-6 justify-between items-center navbar">
-            {/*<div className="absolute z-[0] w-[30%] h-[30%] -left-[50%] rounded-full blue__gradient" />*/}
+        <Suspense fallback="Loading...">
+            <nav className="w-full flex py-6 justify-between items-center navbar">
+                {/*<div className="absolute z-[0] w-[30%] h-[30%] -left-[50%] rounded-full blue__gradient" />*/}
 
-            <img src={logo} alt="hoobank" className="w-[124px] h-[32px]"/>
+                <img src={logo} alt="hoobank" className="w-[124px] h-[32px]"/>
 
-            <ul className="list-none sm:flex hidden justify-end items-center flex-1">
+                <ul className="list-none sm:flex hidden justify-end items-center flex-1">
 
-                {navMenu_("row")}
-
-
-            </ul>
-            <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={menuOpen}
-                onClose={menuCloser_}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }}
-            >
-
-                <MenuItem><Link to="allMembers"><PeopleOutline sx={{mr: 2}}/>Members</Link></MenuItem>
-                {/*<MenuItem onClick={menuCloser_}>Why </MenuItem>*/}
-                <MenuItem onClick={menuCloser_}><Link to="aboutUs"><LiveHelpOutlined sx={{mr: 2}}/>Why Join</Link></MenuItem>
-            </Menu>
-
-            <MuiDialog openState={dialogOpen} closeHandle={dialogCloser}>
-
-                <MuiTabs
-                    childrenComponents={[<LogInForm closeHandle={dialogCloser}/>,
-                        <SignUpForm closeHandle={dialogCloser}/>]}
-                    componentsNames={["LogIn", "SignUp"]}
-                />
-            </MuiDialog>
+                    {navMenu_("row")}
 
 
-            <div className="sm:hidden flex flex-1 justify-end items-center">
-                <img
-                    src={toggle ? close : menu}
-                    alt="menu"
-                    className="w-[28px] h-[28px] object-contain"
-                    onClick={() => setToggle(!toggle)}
-                />
-
-                <div
-                    className={`${
-                        !toggle ? "hidden" : "flex"
-                    } p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+                </ul>
+                <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={menuOpen}
+                    onClose={menuCloser_}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }}
                 >
 
-                    <ul className="list-none flex justify-end items-start flex-1 flex-col">
+                    <MenuItem><Link to="allMembers"><PeopleOutline sx={{mr: 2}}/>Members</Link></MenuItem>
+                    {/*<MenuItem onClick={menuCloser_}>Why </MenuItem>*/}
+                    <MenuItem onClick={menuCloser_}><Link to="aboutUs"><LiveHelpOutlined sx={{mr: 2}}/>Why Join</Link></MenuItem>
+                </Menu>
 
-                        {navMenu_("column")}
+                <MuiDialog openState={dialogOpen} closeHandle={dialogCloser}>
 
-                    </ul>
+                    <MuiTabs
+                        childrenComponents={[<LogInForm closeHandle={dialogCloser}/>,
+                            <SignUpForm closeHandle={dialogCloser}/>]}
+                        componentsNames={["LogIn", "SignUp"]}
+                    />
+                </MuiDialog>
+
+
+                <div className="sm:hidden flex flex-1 justify-end items-center">
+                    <img
+                        src={toggle ? close : menu}
+                        alt="menu"
+                        className="w-[28px] h-[28px] object-contain"
+                        onClick={() => setToggle(!toggle)}
+                    />
+
+                    <div
+                        className={`${
+                            !toggle ? "hidden" : "flex"
+                        } p-6 bg-black-gradient absolute top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
+                    >
+
+                        <ul className="list-none flex justify-end items-start flex-1 flex-col">
+
+                            {navMenu_("column")}
+
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </Suspense>
     );
 };
 
