@@ -6,24 +6,20 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
-import Badge from "@mui/material/Badge";
 import Settings from "@mui/icons-material/Settings";
-import Box from "@mui/material/Box";
 import * as React from "react";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
-import {mainListItems, secondaryListItems} from "../listItems";
+import {adminListItems, mainListItems, secondaryListItems} from "../listItems";
 import {Stack,Menu,MenuItem} from '@mui/material';
 import {useEffect, useState} from "react";
-import {useSendLogoutMutation} from "../../features/auth/authApiSlice";
+import {useAdminLogoutMutation, useSendLogoutMutation} from "../../features/auth/authApiSlice";
 import authTokenStoreFun from "../../features/auth/authToken";
 import {EditOutlined, Logout,SettingsOutlined} from "@mui/icons-material";
-import MuiDialog from "../primaryComponents/MuiDialog";
-import UserAccSettings from "../../features/users/userAccSetting";
-import MuiTabs from "../primaryComponents/MuiTabs";
-import UserPassChange from "../../features/users/userPassChange";
+import UserSettings from "../../features/users/usersSettings";
+import AdminSettings from "../../features/admin/adminSettings";
 
 
 const drawerWidth = 240;
@@ -74,9 +70,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const DashHeader=()=>{
     const [sendLogout,result]=useSendLogoutMutation();
+    const [sendaAdminLogout,adminResult]=useAdminLogoutMutation();
+
     const navigate=useNavigate();
     const {pathname}=useLocation();
     const DashRegex=/^\/dash(\/)?$/
+    const location = useLocation();
+
 
     useEffect(() => {
         if(result.isSuccess){
@@ -102,12 +102,19 @@ const DashHeader=()=>{
         setAnchorEl(null);
     };
     const logOutAction=()=>{
-        sendLogout();
-        navigate('/')
-        authTokenStoreFun.tokenSet(null);//Store Token in LOCALSTORAGE
+        if(location.pathname==='/dash'){
+            sendLogout();
+            navigate('/')
+            authTokenStoreFun.tokenSet(null);//Store Token in LOCALSTORAGE
+        }else {
+            sendaAdminLogout();
+            navigate('/administrator');
+            authTokenStoreFun.tokenSet(null);//Store Token in LOCALSTORAGE
 
-        // authTokenStoreFun.tokenSet("");
-        // console.log(DashRegex.test(pathname));
+
+        }
+
+
     }
 
     const accSetting = () => {
@@ -123,7 +130,9 @@ const DashHeader=()=>{
     const dialogCloser = () => {
         setdialogOpen(false);
     }
-
+    console.log(location.pathname);
+    const listItems = (location.pathname==='/dash') ? mainListItems : adminListItems;
+    const settings_= (location.pathname==='/dash') ?  (<UserSettings dialogOpen={dialogOpen} dialogCloser={dialogCloser}/>): (<AdminSettings dialogOpen={dialogOpen} dialogCloser={dialogCloser}/>);
 
     return(
         <React.Fragment>
@@ -147,10 +156,10 @@ const DashHeader=()=>{
                     </IconButton>
                     <Typography
                         component="h1"
-                        variant="h6"
+                        variant="overline"
                         color="inherit"
                         noWrap
-                        sx={{ flexGrow: 1 }}
+                        sx={{ flexGrow: 1,fontWeight: 'bold',fontSize: 15 }}
                     >
                         Dashboard
                     </Typography>
@@ -176,7 +185,8 @@ const DashHeader=()=>{
                 </Toolbar>
                 <Divider />
                 <List component="nav">
-                    {mainListItems}
+                    {/*(location.pathname==='dash') ? {mainListItems} : {adminListItems}*/}
+                    {listItems}
                     <Divider sx={{ my: 1 }} />
                     {/*{secondaryListItems}*/}
                 </List>
@@ -198,11 +208,7 @@ const DashHeader=()=>{
 
             </Menu>
 
-            <MuiDialog openState={dialogOpen} closeHandle={dialogCloser}>
-                <MuiTabs componentsNames={["Change password","Email Confirmation","Activate account"]} childrenComponents={[<UserPassChange/>,<UserAccSettings/>,<UserAccSettings/>]}/>
-
-
-            </MuiDialog>
+            {settings_}
 
         </React.Fragment>
 

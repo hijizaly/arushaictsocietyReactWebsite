@@ -12,39 +12,57 @@ import AboutUsPage from "./components/landPageComponents/AboutUsPage";
 import {HelpCenter} from "@mui/icons-material";
 import HelpCenterPages from "./components/landPageComponents/HelpCenterPage";
 import PartnersPages from "./components/landPageComponents/partnersPages";
+import AdminLoginPage from "./features/admin/adminLogin";
+import AdminDash from "./features/admin/adminDash";
 
-function App (){
+function App() {
     return (
         <Routes>
-            <Route path="/" element={<Layout />}>
-                <Route index element={<Public />}/>
-                <Route path="aboutUs" element={<AboutUsPage />}/>
+            <Route path="/" element={<Layout/>}>
+                <Route index element={<Public/>}/>
+                <Route path="aboutUs" element={<AboutUsPage/>}/>
                 <Route path="allMembers" element={<MembersList/>}/>
                 <Route path="helpCenter" element={<HelpCenterPages/>}/>
                 <Route path="partners" element={<PartnersPages/>}/>
+                <Route path="administrator" element={<AdminLoginPage/>}/>
 
 
                 {/*<PrivateRoute>*/}
                 <Route path="dash" element={<PrivateRoute/>}>
 
                     {/*<Route path="dash" element={<DashLayout />}>*/}
-                        <Route index element={<UserDashProfile />}/>
-                        <Route path="users">
-                            <Route index element={<UsersList/>}/>
-                        </Route>
-                        <Route path="skills">
-                            <Route index element={<SkillsList/>}/>
-                        </Route>
+                    <Route index element={<UserDashProfile/>}/>
+                    <Route path="users">
+                        <Route index element={<UsersList/>}/>
+                    </Route>
+                    <Route path="skills">
+                        <Route index element={<SkillsList/>}/>
+                    </Route>
                     {/*</Route>/!*endOfDash*!/*/}
+
+                </Route>
+
+
+                <Route path="admin-dash" element={<DashLayout/>}>
+
+                    <Route index element={<AdminDash/>}/>
+
+                    {/*<Route index element={<TT/>}/>*/}
+
+                    {/*<Route path="p">*/}
+                    {/*    <Route index element={<AdminDash/>}/>*/}
+                    {/*</Route>*/}
+
+                    {/*<Route path="f" element={<AdminDash/>}/>*/}
 
                 </Route>
 
                 {/*</PrivateRoute>*/}
 
 
-                <Route path="admin" element={<DashLayout/>}>
+                {/*<Route path="admin" element={<DashLayout/>}>*/}
 
-                </Route>
+                {/*</Route>*/}
             </Route>
         </Routes>
     );
