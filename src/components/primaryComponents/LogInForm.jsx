@@ -72,9 +72,11 @@ export default function LogInForm(props){
 
             props.closeHandle()
             navigate('/dash')
-            // authTokenStoreFun.tokenSet(null);//Store Token in LOCALSTORAGE
+            authTokenStoreFun.tokenSet(null);//Store Token in LOCALSTORAGE
             authTokenStoreFun.tokenSet(accessToken);//Store Token in LOCALSTORAGE
-            // console.dir(authTokenStoreFun.tokenGet());
+
+            console.dir(accessToken);
+            console.dir(authTokenStoreFun.tokenGet());
 
 
         } catch (err) {

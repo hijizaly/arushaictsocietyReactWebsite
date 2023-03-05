@@ -35,14 +35,6 @@ export const mainListItems = (
         </Link>
 
 
-        {/*<Link to="/dash/users"><ListItemButton>*/}
-        {/*<ListItemIcon>*/}
-        {/*  <PeopleIcon />*/}
-        {/*</ListItemIcon>*/}
-        {/*<ListItemText primary="Member Manager" />*/}
-        {/*</ListItemButton>*/}
-        {/*</Link>*/}
-
         <Link to="/dash/skills">
             <ListItemButton>
                 <ListItemIcon>
@@ -83,7 +75,7 @@ export const adminListItems = (
         </Link>
 
 
-        <Link to="/dash/skills">
+        <Link to="/admin-dash/skillsManager">
             <ListItemButton>
                 <ListItemIcon>
                     <BarChartIcon/>
@@ -91,7 +83,7 @@ export const adminListItems = (
                 <ListItemText primary="Manage Skills"/>
             </ListItemButton>
         </Link>
-        <Link to="/dash/skills">
+        <Link to="/admin-dash/membersManager">
             <ListItemButton>
                 <ListItemIcon>
                     <BarChartIcon/>
@@ -99,7 +91,7 @@ export const adminListItems = (
                 <ListItemText primary="Manage Members"/>
             </ListItemButton>
         </Link>
-        <Link to="/dash/skills">
+        <Link to="/admin-dash/contentsManager">
             <ListItemButton>
                 <ListItemIcon>
                     <BarChartIcon/>

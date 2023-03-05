@@ -29,7 +29,8 @@ export default function LabTabs(props) {
 
 
                 {childrenComponents_.map((eachChildComponents,key_)=>(
-                    <TabPanel value={key_} key={key_}>{eachChildComponents}</TabPanel>
+
+                    <TabPanel value={Number(key_)} >{eachChildComponents}</TabPanel>
                 ))}
 
             </TabContext>

@@ -14,6 +14,8 @@ import HelpCenterPages from "./components/landPageComponents/HelpCenterPage";
 import PartnersPages from "./components/landPageComponents/partnersPages";
 import AdminLoginPage from "./features/admin/adminLogin";
 import AdminDash from "./features/admin/adminDash";
+import SkillsManager from "./features/skills/skillsManager";
+import ContentsManager from "./features/contents/contentsManager";
 
 function App() {
     return (
@@ -46,14 +48,15 @@ function App() {
                 <Route path="admin-dash" element={<DashLayout/>}>
 
                     <Route index element={<AdminDash/>}/>
-
-                    {/*<Route index element={<TT/>}/>*/}
-
-                    {/*<Route path="p">*/}
-                    {/*    <Route index element={<AdminDash/>}/>*/}
-                    {/*</Route>*/}
-
-                    {/*<Route path="f" element={<AdminDash/>}/>*/}
+                    <Route path="skillsManager">
+                        <Route index element={<SkillsManager/>}/>
+                    </Route>
+                    <Route path="membersManager">
+                        <Route index element={<UsersList/>} />
+                    </Route>
+                    <Route path="contentsManager">
+                        <Route index element={<ContentsManager/>}/>
+                    </Route>
 
                 </Route>
 

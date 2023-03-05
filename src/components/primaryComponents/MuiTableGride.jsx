@@ -73,6 +73,7 @@ export default function DataTable(props) {
 
             <DataGrid
                 rows={dataForTable}
+                getRowId={(dataForTable)=>dataForTable.skill_id}
                 columns={allColumns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}

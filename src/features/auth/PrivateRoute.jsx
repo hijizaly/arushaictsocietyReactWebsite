@@ -5,6 +5,7 @@ import DashLayout from "../../components/dashComponents/DashLayout";
 
 const PrivateRoute = () => {
     const {decodedToken, isExpired} = useJwt(authTokenStoreFun.tokenGet());
+    // console.log(decodedToken.accountType);
     if(decodedToken.accountType==="member"){
         return isExpired ? <Navigate to="/"/> : <DashLayout/>;
     }else {

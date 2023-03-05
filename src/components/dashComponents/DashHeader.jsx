@@ -118,7 +118,7 @@ const DashHeader=()=>{
     }
 
     const accSetting = () => {
-        console.log("lunch account settings");
+        // console.log("lunch account settings");
 
     }
 
@@ -130,7 +130,7 @@ const DashHeader=()=>{
     const dialogCloser = () => {
         setdialogOpen(false);
     }
-    console.log(location.pathname);
+    // console.log(location.pathname);
     const listItems = (location.pathname==='/dash') ? mainListItems : adminListItems;
     const settings_= (location.pathname==='/dash') ?  (<UserSettings dialogOpen={dialogOpen} dialogCloser={dialogCloser}/>): (<AdminSettings dialogOpen={dialogOpen} dialogCloser={dialogCloser}/>);
 

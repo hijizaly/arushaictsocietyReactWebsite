@@ -26,7 +26,7 @@ export default function TableToolBar() {
                 {/*    </IconButton>*/}
                 {/*</Tooltip>*/}
             </Toolbar>
-            {/*<Divider />*/}
+            <Divider />
 
 
         </>
