@@ -45,7 +45,7 @@ function App() {
                 </Route>
 
 
-                <Route path="admin-dash" element={<DashLayout/>}>
+                <Route path="admin-dash" element={<PrivateRoute/>}>
 
                     <Route index element={<AdminDash/>}/>
                     <Route path="skillsManager">

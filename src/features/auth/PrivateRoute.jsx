@@ -4,8 +4,13 @@ import {Navigate} from 'react-router-dom';
 import DashLayout from "../../components/dashComponents/DashLayout";
 
 const PrivateRoute = () => {
-    const {decodedToken, isExpired} = useJwt(authTokenStoreFun.tokenGet());
-    // console.log(decodedToken.accountType);
+    const {decodedToken, isExpired} = useJwt(authTokenStoreFun.tokenGet().split(" ")[1]);
+    //
+    const exp = decodedToken?.accountType;
+    //
+    console.dir(exp);
+    // console.log(authTokenStoreFun.tokenGet().split(" ")[1]);
+
     if(decodedToken.accountType==="member"){
         return isExpired ? <Navigate to="/"/> : <DashLayout/>;
     }else {
