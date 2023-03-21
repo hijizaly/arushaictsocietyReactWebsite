@@ -71,7 +71,7 @@ export default function LogInForm(props){
             // dispatch(setCredentials({accessToken}));
 
             props.closeHandle()
-            // authTokenStoreFun.tokenSet(null);//Store Token in LOCALSTORAGE
+            authTokenStoreFun.tokenSet(null);//Store Token in LOCALSTORAGE
             authTokenStoreFun.tokenSet(accessToken);//Store Token in LOCALSTORAGE
 
             navigate('/dash');

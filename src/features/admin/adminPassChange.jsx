@@ -26,7 +26,7 @@ const AdminPassChange =()=>{
         e.preventDefault();
 
         const pS = {
-            "oldpassword": inputs.oldPassword,
+            "oldpassword": inputs.contentHeader,
             "newpassword": inputs.newPassword
         }
 
@@ -59,7 +59,7 @@ const AdminPassChange =()=>{
                 <form onSubmit={submitResetPassword}>
                     <FormControl>
                         <Stack direction="column" spacing={4} my={5}>
-                            <TextField label="Old Password" size="small" value={inputs.oldPassword}
+                            <TextField label="Old Password" size="small" value={inputs.contentHeader}
                                        onChange={inputsOnChangeOnhandle}
                                        name="oldPassword" type="password" required/>
                             <Stack direction="row" spacing={2} >

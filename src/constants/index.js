@@ -89,6 +89,10 @@ export const stats = [
     id: "stats-3",
     title: "Activities",
     value: "199+",
+  },  {
+    id: "stats-3",
+    title: "Activities",
+    value: "199+",
   },
 ];
 

@@ -1,26 +1,41 @@
 import { card } from "../../assets";
 import styles, { layout } from "../../style";
 import Button from "../primaryComponents/Button";
+import {useContentsDetailsQuery} from "../../features/contents/contentsSlice";
 
-const CardDeal = () => (
-  <section className={layout.section}>
-    <div className={layout.sectionInfo}>
-      <h2 className={styles.heading2}>
-        Find a better place for Learn <br className="sm:block hidden" /> as Journal developer
-        steps.
-      </h2>
-      <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
-        Arcu tortor, purus in mattis at sed integer faucibus. Aliquet quis
-        aliquet eget mauris tortor.ç Aliquet ultrices ac, ametau.
-      </p>
+function CardDeal() {
+    let webContentData;
+    let fetchedData;
+    const contentData = useContentsDetailsQuery('E');
 
-      <Button styles={`mt-10`} />
-    </div>
+    if(contentData.isSuccess && contentData.data.data.length !== 0){
+        fetchedData=contentData.data.data;
+        webContentData=(
+            <section className={layout.section}>
+                <div className={layout.sectionInfo}>
+                    <h2 className={styles.heading2}>
 
-    <div className={layout.sectionImg}>
-      <img src={card} alt="billing" className="w-[100%] h-[100%]" />
-    </div>
-  </section>
-);
+                        {fetchedData[0].contentHead}
+                    </h2>
+                    <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
+
+                        {fetchedData[0].contentBody}
+                    </p>
+
+                    <Button styles={`mt-10`}/>
+                </div>
+
+                <div className={layout.sectionImg}>
+                    {/*<img src={card} alt="billing" className="w-[100%] h-[100%]"/>*/}
+                    <img src={fetchedData[1].contentImage} alt="billing" className="w-[100%] h-[100%]"/>
+                </div>
+            </section>
+        );
+    }else {
+        webContentData="";
+    }
+
+    return webContentData;
+}
 
 export default CardDeal;

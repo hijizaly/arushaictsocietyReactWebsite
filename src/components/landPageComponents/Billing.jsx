@@ -8,71 +8,82 @@ import * as React from "react";
 import MuiTabs from "../primaryComponents/MuiTabs";
 import LogInForm from "../primaryComponents/LogInForm";
 import SignUpForm from "../primaryComponents/SignUpForm";
+import {useContentsDetailsQuery} from "../../features/contents/contentsSlice";
+import Loader from "../primaryComponents/Loader";
 
-const Billing = () => {
-        const [dialogOpen, setdialogOpen] = useState(false);
+function Billing() {
+    let webContentData;
+    let fetchedData;
+    const contentData = useContentsDetailsQuery('D');
 
-        const dialogOpener = () => {
-            setdialogOpen(true);
-        };
-        const dialogCloser = () => {
-            setdialogOpen(false);
-        };
-        function f() {
-            console.log("hey heyh")
-        }
+    const [dialogOpen, setdialogOpen] = useState(false);
 
-        const logIn_ = (<MuiDialog openState={dialogOpen} closeHandle={dialogCloser}>
-
-                <MuiTabs
-                    childrenComponents={[<LogInForm closeHandle={dialogCloser}/>,
-                        <SignUpForm closeHandle={dialogCloser}/>]}
-                    componentsNames={["LogIn", "SignUp"]}
-                />
-            </MuiDialog>);
+    const dialogOpener = () => {
+        setdialogOpen(true);
+    };
+    const dialogCloser = () => {
+        setdialogOpen(false);
+    };
 
 
 
-        return (<section id="product" className={layout.sectionReverse}>
-            <div className={layout.sectionImgReverse}>
-                <img src={bill} alt="billing" className="w-[100%] h-[100%] relative z-[5]"/>
+    const logIn_ = (<MuiDialog openState={dialogOpen} closeHandle={dialogCloser}>
 
-                {/* gradient start */}
-                <div className="absolute z-[3] -left-1/2 top-0 w-[50%] h-[50%] rounded-full white__gradient"/>
-                <div className="absolute z-[0] w-[50%] h-[50%] -left-1/2 bottom-0 rounded-full pink__gradient"/>
-                {/* gradient end */}
-            </div>
+        <MuiTabs
+            childrenComponents={[<LogInForm closeHandle={dialogCloser}/>,
+                <SignUpForm closeHandle={dialogCloser}/>]}
+            componentsNames={["LogIn", "SignUp"]}
+        />
+    </MuiDialog>);
 
-            <div className={layout.sectionInfo}>
-                <h2 className={styles.heading2}>
-                    Why Arusha ICT Society,<br className="sm:block hidden"/>
-                </h2>
-                <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
-                    Elit enim sed massa etiam. Mauris eu adipiscing ultrices ametodio
-                    aenean neque. Fusce ipsum orci rhoncus aliporttitor integer platea
-                    placerat.Elit enim sed massa etiam. Mauris eu adipiscing ultrices ametodio
-                    aenean neque. Fusce ipsum orci rhoncus aliporttitor integer platea
-                    placerat.Elit enim sed massa etiam. Mauris eu adipiscing ultrices ametodio
-                    aenean neque. Fusce ipsum orci rhoncus aliporttitor integer platea
-                    placerat.
-                </p>
+    if (contentData.isLoading) webContentData = (
+        <div><br/><br/><br/><br/><br/><Loader message="Fetching" sizeinPx="50"/></div>);
 
-                <div className="flex flex-row flex-wrap sm:mt-10 mt-6">
-                    {logIn_}
 
-                    <Stack direction="row" spacing={5}>
-                        <MuiButton color="success" variant="outlined" btnText="Login" action="" size="small"
-                                   btnType="iconbtn" btnIcon="fingerprint" handleClick={dialogOpener}/>
-                        <MuiButton color="success" variant="outlined" btnText="Sign Up" action="" size="small"
-                                   btnType="iconbtn" btnIcon="fingerprint" handleClick={dialogOpener}/>
-                    </Stack>
+    if(contentData.isSuccess && contentData.data.data.length!==0){
+        fetchedData=contentData.data.data;
+        // console.log(fetchedData[0].contentImage)
+        webContentData=(
+            <section id="product" className={layout.sectionReverse}>
+                <div className={layout.sectionImgReverse}>
+                    <img src={fetchedData[0].contentImage} alt="billing" className="w-[100%] h-[100%] relative z-[5]"/>
 
-                    {/*<img src={apple} alt="google_play" className="w-[128.86px] h-[42.05px] object-contain mr-5 cursor-pointer" />*/}
-                    {/*<img src={google} alt="google_play" className="w-[144.17px] h-[43.08px] object-contain cursor-pointer" />*/}
+                    {/* gradient start */}
+                    <div className="absolute z-[3] -left-1/2 top-0 w-[50%] h-[50%] rounded-full white__gradient"/>
+                    <div className="absolute z-[0] w-[50%] h-[50%] -left-1/2 bottom-0 rounded-full pink__gradient"/>
+                    {/* gradient end */}
                 </div>
-            </div>
-        </section>);
+
+                <div className={layout.sectionInfo}>
+                    <h2 className={styles.heading2}>
+                        {fetchedData[1].contentHead}
+                        {/*Why Arusha ICT Society,<br className="sm:block hidden"/>*/}
+                    </h2>
+                    <p className={`${styles.paragraph} max-w-[470px] mt-5`}>
+                        {fetchedData[1].contentBody}
+
+                    </p>
+
+                    <div className="flex flex-row flex-wrap sm:mt-10 mt-6">
+                        {logIn_}
+
+                        <Stack direction="row" spacing={5}>
+                            <MuiButton color="success" variant="outlined" btnText="Login" action="" size="small"
+                                       btnType="iconbtn" btnIcon="fingerprint" handleClick={dialogOpener}/>
+                            <MuiButton color="success" variant="outlined" btnText="Sign Up" action="" size="small"
+                                       btnType="iconbtn" btnIcon="fingerprint" handleClick={dialogOpener}/>
+                        </Stack>
+
+                    </div>
+                </div>
+            </section>)
+    }else {
+        webContentData="";
     }
+
+
+    return webContentData;
+}
 ;
 
 export default Billing;
